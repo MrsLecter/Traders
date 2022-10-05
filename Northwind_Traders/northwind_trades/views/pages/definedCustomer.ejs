@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body class="container-fluid w-100 h-100 p-0 m-0" style="background-color: #e9ecef;">
+
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 p-0 m-0">
+                <header>
+                    <%- include('../partials/header'); %>
+                </header>
+            </div>
+            <div class="col-10 col-10  m-0 jumbotron">
+                <main>
+                    <div class="container-fluid">
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-9">
+                                    <h3><i class="bi bi-info-circle-fill"></i> Customer information</h3>
+                                    <hr>
+                                </div>
+
+                                <div class="col-4">
+                                    <h4><b>Company Name</b></h4>
+                                    <p>
+                                        <%=data.companyname%>
+                                    </p>
+                                    <h4><b>Contact Name</b></h4>
+                                    <p>
+                                        <%=data.contactname%>
+                                    </p>
+                                    <h4><b>Contact Title</b></h4>
+                                    <p>
+                                        <%=data.contacttitle%>
+                                    </p>
+                                    <h4><b>Address</b></h4>
+                                    <p>
+                                        <%=data.address%>
+                                    </p>
+                                    <h4><b>City</b></h4>
+                                    <p>
+                                        <%=data.city%>
+                                    </p>
+                                </div>
+                                <div class="col-6">
+                                    <h4><b>Postal Code</b></h4>
+                                    <p>
+                                        <%=data.postalcode%>
+                                    </p>
+                                    <h4><b>Region</b></h4>
+                                    <p>
+                                        <%=data.region%>
+                                    </p>
+                                    <h4><b>Country</b></h4>
+                                    <p>
+                                        <%=data.country%>
+                                    </p>
+                                    <h4><b>Phone</b></h4>
+                                    <p>
+                                        <%=data.phone%>
+                                    </p>
+                                    <h4><b>Fax</b></h4>
+                                    <p>
+                                        <%=(data.fax) ? data.fax : '-' %>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <a href="/customers" class="btn btn-danger active" role="button" data-bs-toggle="button"
+                            aria-pressed="true">Go back</a>
+
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body class="container-fluid w-100 h-100 p-0 m-0" style="background-color: #e9ecef;">
+
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 h-100 p-0 m-0">
+                <header>
+                    <%- include('../partials/header'); %>
+                </header>
+            </div>
+            <div class="col-10  m-0 jumbotron">
+                <main>
+                    <div class="container-fluid">
+                        <h3>Activity log</h3>
+                        <h6 class="fw-lighter text-secondary">Explore the app and see metrics here</h6>
+                        <hr>
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th scope="col"><b>Parameter</b></th>
+                                    <th scope="col"><b>SELECT</b></th>
+                                    <th scope="col"><b>SELECT WHERE</b></th>
+                                    <th scope="col"><b>SELECT LEFT JOIN</b></th>
+                                    <th scope="col"><b>Query amount</b></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">
+                                        Query count
+                                    </th>
+                                    <td>
+                                        <%=selectCount%>
+                                    </td>
+                                    <td>
+                                        <%=whereCount%>
+                                    </td>
+                                    <td>
+                                        <%=joinCount%>
+                                    </td>
+                                    <td>
+                                        <%=count%>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <br>
+                        <ul>
+                            <% if (typeof data==='object' ) { %>
+                                <ul>
+                                    <% data.forEach(function (log) { %>
+                                        <li>
+                                            <p><span class="fw-lighter text-secondary">
+                                                    <%=log.split(';,')[0]%>,
+                                                        <%=parseFloat(log.split(';,')[2]).toFixed(5)%>ms
+                                                </span></p>
+                                            <p><span class="text-uppercase  text-primary">
+                                                    <%=log.split(';,')[1].substring(21)%>;
+                                                </span></p>
+                                        </li>
+                                        <% }) %>
+                                </ul>
+                                <% } %>
+                                    <hr>
+
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+</body>
+
+</html>

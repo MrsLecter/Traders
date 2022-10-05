@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body class="container-fluid w-100 h-100 p-0 m-0" style="background-color: #e9ecef;">
+
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 p-0 m-0">
+                <header>
+                    <%- include('../partials/header'); %>
+                </header>
+            </div>
+            <div class="col-10 col-10  m-0 jumbotron">
+                <main>
+                    <div class="container-fluid">
+                        <h4>Employees</h4>
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">City</th>
+                                    <th scope="col">Phone</th>
+                                    <th scope="col">Country</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (data.length) { %>
+                                    <ul>
+                                        <% data.forEach(function (employee) { %>
+                                            <tr>
+                                                <th scope="row">
+                                                    <i class="bi bi-check-circle-fill"></i>
+                                                </th>
+                                                <td>
+                                                    <a href='/employees/<%=employee.employeeid%>'>
+                                                        <%= employee.firstname%>
+                                                            <%= employee.lastname%>
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <%= employee.title%>
+                                                </td>
+                                                <td>
+                                                    <%= employee.city%>
+                                                </td>
+                                                <td>
+                                                    <%= employee.homephone%>
+                                                </td>
+                                                <td>
+                                                    <%= employee.country%>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                    </ul>
+                                    <% } %>
+
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+</body>
+
+</html>

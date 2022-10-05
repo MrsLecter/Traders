@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body class="container-fluid w-100 h-100 p-0 m-0" style="background-color: #e9ecef;">
+
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 p-0 m-0">
+                <header>
+                    <%- include('../partials/header'); %>
+                </header>
+            </div>
+            <div class="col-10 jumbotron">
+                <main>
+                    <div class="container-fluid">
+                        <h4>Orders</h4>
+                        <!-- <%= data%> -->
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Id</th>
+                                    <th scope="col">Total Price</th>
+                                    <th scope="col">Products</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Shipped</th>
+                                    <th scope="col">Ship Name</th>
+                                    <th scope="col">City</th>
+                                    <th scope="col">Country</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (data.length) { %>
+                                    <ul>
+                                        <% data.forEach(function (order) { %>
+                                            <tr>
+                                                <td scope="row">
+                                                    <a href='/orders/<%=order.orderid%>'>
+                                                        <%= order.orderid%>
+                                                    </a>
+
+                                                </td>
+                                                <td scope="row">
+                                                    $ <%= (order.totalprice).toFixed(2)%>
+                                                </td>
+                                                <td scope="row">
+                                                    <%= order.products%>
+                                                </td>
+                                                <td scope="row">
+                                                    <%= order.quantity%>
+                                                </td>
+                                                <td scope="row">
+                                                    <%= (order.shippeddate) ?
+                                                        order.shippeddate.toISOString().substring(0,10) : '-' %>
+                                                </td>
+                                                <td scope="row">
+                                                    <%= order.shipname%>
+                                                </td>
+                                                <td scope="row">
+                                                    <%= order.shipcity%>
+                                                </td>
+                                                <td scope="row">
+                                                    <%= order.shipcountry%>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                    </ul>
+                                    <% } %>
+                            </tbody>
+                        </table>
+
+
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+</body>
+
+</html>

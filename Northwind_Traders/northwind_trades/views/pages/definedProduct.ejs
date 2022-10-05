@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body class="container-fluid w-100 h-100 p-0 m-0" style="background-color: #e9ecef;">
+
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 p-0 m-0">
+                <header>
+                    <%- include('../partials/header'); %>
+                </header>
+            </div>
+            <div class="col-10 col-10  m-0 jumbotron">
+                <main>
+                    <div class="container-fluid">
+
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-9">
+                                    <h3><i class="bi bi-dropbox"></i> Product information</h3>
+                                    <hr>
+                                </div>
+
+                                <div class="col-4">
+                                    <h4><b>Product Name</b></h4>
+                                    <p>
+                                        <%=data.productname%>
+                                    </p>
+                                    <h4><b>Supplier</b></h4>
+                                    <p>
+                                        <a href='/suppliers/<%=supplier.supplierid%>'>
+                                            <%=supplier.companyname%>
+                                        </a>
+                                    </p>
+                                    <h4><b>Quantity Per Unit</b></h4>
+                                    <p>
+                                        <%=data.quantityperunit%>
+                                    </p>
+                                    <h4><b>Unit Price</b></h4>
+                                    <p>
+                                        $<%=data.unitprice%>
+                                    </p>
+                                </div>
+                                <div class="col-6">
+                                    <h4><b>Units In Stock</b></h4>
+                                    <p>
+                                        <%=data.unitinstock%>
+                                    </p>
+                                    <h4><b>Units In Order</b></h4>
+                                    <p>
+                                        <%=data.unitsonorder%>
+                                    </p>
+                                    <h4><b>Reorder Level</b></h4>
+                                    <p>
+                                        <%=data.reorderlevel%>
+                                    </p>
+                                    <h4><b>Discontinued</b></h4>
+                                    <p>
+                                        <%=data.discontinued%>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <a href="/products" class="btn btn-danger active" role="button" data-bs-toggle="button"
+                            aria-pressed="true">Go back</a>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+</body>
+
+</html>

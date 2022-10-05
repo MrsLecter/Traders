@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body class="container-fluid w-100 h-100 p-0 m-0" style="background-color: #e9ecef;">
+
+    <head>
+        <%- include('../partials/head'); %>
+    </head>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 p-0 m-0">
+                <header>
+                    <%- include('../partials/header'); %>
+                </header>
+            </div>
+            <div class="col-10 col-10  m-0 jumbotron">
+                <main>
+                    <div class="container-fluid">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-9">
+                                    <h3><i class="bi bi-person-lines-fill"></i> Order information</h3>
+                                    <hr>
+                                </div>
+
+                                <div class="col-4">
+                                    <h4><b>Customer Id</b></h4>
+                                    <p>
+                                        <a href='/customers/<%=data.customerid%>'>
+                                            <%=data.customerid%>
+                                        </a>
+                                    </p>
+
+                                    <h4><b>Ship Name</b></h4>
+                                    <p>
+                                        <%=data.shipname%>
+                                    </p>
+                                    <h4><b>Total Products</b></h4>
+                                    <p>
+                                        <%=data.totalproducts%>
+                                    </p>
+                                    <h4><b>Total Quantity</b></h4>
+                                    <p>
+                                        <%=data.totalquantity%>
+                                    </p>
+                                    <h4><b>Total Price</b></h4>
+                                    <p>
+                                        $ <%=(data.totalprice) ? (data.totalprice).toFixed(2) : '-' %>
+                                    </p>
+                                    <h4><b>Total Discount</b></h4>
+                                    <p>
+                                        $ <%=data.totaldiscount%>
+                                    </p>
+                                    <h4><b>Ship Via</b></h4>
+                                    <p>
+                                        <%=data.shipname%>
+                                    </p>
+                                    <h4><b>Freight</b></h4>
+                                    <p>
+                                        $ <%=data.freight%>
+                                    </p>
+                                </div>
+                                <div class="col-6">
+                                    <h4><b>Order Date</b></h4>
+                                    <p>
+                                        <%=(data.orderdate) ? data.shippeddate.toISOString().substring(0,10) : '-' %> %>
+                                    </p>
+                                    <h4><b>Required Date</b></h4>
+                                    <p>
+                                        <%=(data.orderdate) ? data.shippeddate.toISOString().substring(0,10) : '-' %> %>
+                                    </p>
+                                    <h4><b>Shipped Date</b></h4>
+                                    <p>
+                                        <%=(data.shippeddate) ? data.shippeddate.toISOString().substring(0,10) : '-' %>
+                                    </p>
+                                    <h4><b>Ship City</b></h4>
+                                    <p>
+                                        <%=data.shipcity%>
+                                    </p>
+                                    <h4><b>Ship Region</b></h4>
+                                    <p>
+                                        <%=(data.shipregion) ? data.shipregion : '-' %>
+                                    </p>
+                                    <h4><b>Ship Postal Code</b></h4>
+                                    <p>
+                                        <%=(data.shippostalcode) ? data.shippostalcode : '-' %>
+                                    </p>
+                                    <h4><b>Ship Country</b></h4>
+                                    <p>
+                                        <%=(data.shipcountry) ? data.shipcountry : '-' %>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-9">
+                                    <h3><i class="bi bi-cpu"></i> Products in Order</h3>
+                                    <hr>
+                                </div>
+                                <div class="col-9">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col"><b>Product</b></th>
+                                                <th scope="col"><b>Quantity</b></th>
+                                                <th scope="col"><b>Order Price</b></th>
+                                                <th scope="col"><b>Total Price</b></th>
+                                                <th scope="col"><b>Discount</b></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% if (dataProducts.length) { %>
+                                                <ul>
+                                                    <% dataProducts.forEach(function (product) { %>
+                                                        <tr>
+                                                            <td>
+                                                                <a href='/products/<%=product.productid%>'>
+                                                                    <%=product.productname%>
+                                                                </a>
+                                                            </td>
+                                                            <td>
+                                                                <%=product.quantity%>
+                                                            </td>
+                                                            <td>
+                                                                $ <%=product.orderprice%>
+                                                            </td>
+                                                            <td>
+                                                                $ <%=(product.totalprice) ?
+                                                                    (product.totalprice).toFixed(2) : '-' %>
+                                                            </td>
+                                                            <td>
+                                                                <%=product. discount%> %
+                                                            </td>
+                                                        </tr>
+                                                        <% }) %>
+                                                </ul>
+                                                <% } %>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <a href="/orders" class="btn btn-danger active" role="button" data-bs-toggle="button"
+                            aria-pressed="true">Go back</a>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <%- include('../partials/footer'); %>
+    </footer>
+</body>
+
+</html>
