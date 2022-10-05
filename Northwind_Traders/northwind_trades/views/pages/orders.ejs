@@ -43,7 +43,7 @@
 
                                                 </td>
                                                 <td scope="row">
-                                                    $ <%= (order.totalprice).toFixed(2)%>
+                                                    $ <%= (order.totalprice) ? (order.totalprice).toFixed(2) : '-' %>
                                                 </td>
                                                 <td scope="row">
                                                     <%= order.products%>
