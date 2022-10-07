@@ -1,8 +1,22 @@
-import { Sequelize, DataTypes, Deferrable } from "sequelize";
+import {
+  Sequelize,
+  Model,
+  DataTypes,
+  CreationOptional,
+  InferAttributes,
+  InferCreationAttributes,
+  IntegerDataType,
+} from "sequelize";
 require("dotenv").config();
 const sequelize = new Sequelize(process.env.DB_URL);
 
-export const Regions = sequelize.define(
+interface Regions
+  extends Model<InferAttributes<Regions>, InferCreationAttributes<Regions>> {
+  regionid: CreationOptional<number>;
+  regiondescription: string;
+}
+
+export const Regions = sequelize.define<Regions>(
   "regions",
   {
     regionid: {
@@ -24,7 +38,17 @@ export const Regions = sequelize.define(
   },
 );
 
-export const Territories = sequelize.define(
+interface Territories
+  extends Model<
+    InferAttributes<Territories>,
+    InferCreationAttributes<Territories>
+  > {
+  territoryid: number;
+  territorydescription: string;
+  regionid: number;
+}
+
+export const Territories = sequelize.define<Territories>(
   "territories",
   {
     territoryid: {
@@ -54,7 +78,30 @@ export const Territories = sequelize.define(
   },
 );
 
-export const Employees = sequelize.define(
+interface Employees
+  extends Model<
+    InferAttributes<Employees>,
+    InferCreationAttributes<Employees>
+  > {
+  employeeid: number;
+  lastname: string;
+  firstname: string;
+  title: string;
+  titleofcourtesy: string;
+  birthdate: string;
+  hiredate: string;
+  address: string;
+  city: string;
+  region: string;
+  postalcode: number;
+  country: string;
+  homephone: string;
+  extension: string;
+  notes: string;
+  reportsto: number;
+}
+
+export const Employees = sequelize.define<Employees>(
   "employees",
   {
     employeeid: {
@@ -132,7 +179,16 @@ export const Employees = sequelize.define(
   },
 );
 
-export const EmployeesTerritories = sequelize.define(
+interface EmployeesTerritories
+  extends Model<
+    InferAttributes<EmployeesTerritories>,
+    InferCreationAttributes<EmployeesTerritories>
+  > {
+  employeeid: number;
+  territoryid: number;
+}
+
+export const EmployeesTerritories = sequelize.define<EmployeesTerritories>(
   "employeeterritories",
   {
     employeeid: {
@@ -157,7 +213,25 @@ export const EmployeesTerritories = sequelize.define(
   },
 );
 
-export const Customers = sequelize.define(
+interface Customers
+  extends Model<
+    InferAttributes<Customers>,
+    InferCreationAttributes<Customers>
+  > {
+  customerid: string;
+  companyname: string;
+  contactname: string;
+  contacttitle: string;
+  address: string;
+  city: string;
+  Region: null | string;
+  postalcode: string;
+  country: string;
+  phone: string;
+  fax: string;
+}
+
+export const Customers = sequelize.define<Customers>(
   "customers",
   {
     customerid: {
@@ -206,7 +280,17 @@ export const Customers = sequelize.define(
   },
 );
 
-export const Categories = sequelize.define(
+interface Categories
+  extends Model<
+    InferAttributes<Categories>,
+    InferCreationAttributes<Categories>
+  > {
+  categoryid: number;
+  categoryname: string;
+  description: string;
+}
+
+export const Categories = sequelize.define<Categories>(
   "categories",
   {
     categoryid: {
@@ -231,7 +315,14 @@ export const Categories = sequelize.define(
   },
 );
 
-export const Shippers = sequelize.define(
+interface Shippers
+  extends Model<InferAttributes<Shippers>, InferCreationAttributes<Shippers>> {
+  shipperid: number;
+  companyname: string;
+  phone: string;
+}
+
+export const Shippers = sequelize.define<Shippers>(
   "shippers",
   {
     shipperid: {
@@ -257,7 +348,23 @@ export const Shippers = sequelize.define(
   },
 );
 
-export const Supplies = sequelize.define(
+interface Supplies
+  extends Model<InferAttributes<Supplies>, InferCreationAttributes<Supplies>> {
+  supplierid: number;
+  companyname: string;
+  contactname: string;
+  contacttitle: string;
+  address: string;
+  city: string;
+  region: string;
+  postalcode: string;
+  country: string;
+  phone: string;
+  fax: string;
+  homepage: string;
+}
+
+export const Supplies = sequelize.define<Supplies>(
   "supplies",
   {
     supplierid: {
@@ -316,7 +423,21 @@ export const Supplies = sequelize.define(
   },
 );
 
-export const Products = sequelize.define(
+interface Products
+  extends Model<InferAttributes<Products>, InferCreationAttributes<Products>> {
+  productid: number;
+  productname: string;
+  supplierid: number;
+  categoryid: number;
+  quantityperunit: string;
+  unitprice: number;
+  unitinstock: number;
+  unitsonorder: number;
+  reorderlevel: number;
+  discontinued: number;
+}
+
+export const Products = sequelize.define<Products>(
   "products",
   {
     productid: {
@@ -378,7 +499,25 @@ export const Products = sequelize.define(
   },
 );
 
-export const Orders = sequelize.define(
+interface Orders
+  extends Model<InferAttributes<Orders>, InferCreationAttributes<Orders>> {
+  orderid: number;
+  customerid: string;
+  employeeid: number;
+  orderdate: Date;
+  requiredate: Date;
+  shippeddate: Date;
+  shipvia: number;
+  freight: number;
+  shipname: string;
+  shipaddress: string;
+  shipcity: string;
+  shipregion: string;
+  shippostalcode: string;
+  shipcountry: string;
+}
+
+export const Orders = sequelize.define<Orders>(
   "orders",
   {
     orderid: {
@@ -455,7 +594,19 @@ export const Orders = sequelize.define(
   },
 );
 
-export const OrderDetails = sequelize.define(
+interface OrderDetails
+  extends Model<
+    InferAttributes<OrderDetails>,
+    InferCreationAttributes<OrderDetails>
+  > {
+  orderid: number;
+  productid: number;
+  unitprice: number;
+  quantity: number;
+  discount: number;
+}
+
+export const OrderDetails = sequelize.define<OrderDetails>(
   "orderdetails",
   {
     orderid: {

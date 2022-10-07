@@ -8,7 +8,7 @@ import {
 } from "../models/mainModels";
 import { writeLog, readSqlLogs } from "../utils/utils";
 import { sequelize } from "../utils/dbConnect";
-const { Op } = require("sequelize");
+import { Op } from "sequelize";
 
 export const startPage = async (
   req: Request,
@@ -37,7 +37,8 @@ export const employeesPage = async (
     res.status(200).render("./pages/employees", { data: employees });
   } catch (err) {
     sequelize.close();
-    console.log("Error", err);
+    const error = new Error((err as Error).message);
+    return next(error);
   }
 };
 
@@ -58,21 +59,18 @@ export const employeePage = async (
       where: { employeeid: employeeid },
     });
 
-    if (employee === null) {
-      console.log("Not found!");
-    } else {
-      const reportsTo = await Employees.findOne({
-        where: { employeeid: employee.reportsto },
-      });
-      const end = performance.now();
-      writeLog(sqlReq, end - start);
-      res
-        .status(200)
-        .render("./pages/definedEmployee", { data: employee, link: reportsTo });
-    }
+    const reportsTo = await Employees.findOne({
+      where: { employeeid: employee?.reportsto },
+    });
+    const end = performance.now();
+    writeLog(sqlReq, end - start);
+    res
+      .status(200)
+      .render("./pages/definedEmployee", { data: employee, link: reportsTo });
   } catch (err) {
     sequelize.close();
-    console.log("Error", err);
+    const error = new Error((err as Error).message);
+    return next(error);
   }
 };
 
@@ -95,7 +93,8 @@ export const customersPage = async (
     res.status(200).render("./pages/customers", { data: customers });
   } catch (err) {
     sequelize.close();
-    console.log("Error", err);
+    const error = new Error((err as Error).message);
+    return next(error);
   }
 };
 
@@ -120,7 +119,8 @@ export const customerPage = async (
     res.status(200).render("./pages/definedCustomer", { data: customer });
   } catch (err) {
     sequelize.close();
-    console.log("Error", err);
+    const error = new Error((err as Error).message);
+    return next(error);
   }
 };
 
@@ -143,7 +143,8 @@ export const productsPage = async (
     res.status(200).render("./pages/products", { data: products });
   } catch (err) {
     sequelize.close();
-    console.log("Error", err);
+    const error = new Error((err as Error).message);
+    return next(error);
   }
 };
 
@@ -172,7 +173,7 @@ export const productPage = async (
       logging: (sql) => {
         sqlReq2 += sql;
       },
-      where: { supplierid: product.supplierid },
+      where: { supplierid: product?.supplierid },
     });
     const end2 = performance.now();
     writeLog(sqlReq2, end2 - start2);
@@ -182,7 +183,8 @@ export const productPage = async (
     });
   } catch (err) {
     sequelize.close();
-    console.log("Error", err);
+    const error = new Error((err as Error).message);
+    return next(error);
   }
 };
 
@@ -209,7 +211,8 @@ export const ordersPage = async (
     res.status(200).render("./pages/orders", { data: orders });
   } catch (err) {
     sequelize.close();
-    console.log("Error", err);
+    const error = new Error((err as Error).message);
+    return next(error);
   }
 };
 
@@ -255,7 +258,8 @@ export const orderPage = async (
     });
   } catch (err) {
     sequelize.close();
-    console.log("Error", err);
+    const error = new Error((err as Error).message);
+    return next(error);
   }
 };
 
@@ -278,7 +282,8 @@ export const suppliersPage = async (
     res.status(200).render("./pages/suppliers", { data: suppliers });
   } catch (err) {
     sequelize.close();
-    console.log("Error", err);
+    const error = new Error((err as Error).message);
+    return next(error);
   }
 };
 
@@ -303,7 +308,8 @@ export const supplierPage = async (
     res.status(200).render("./pages/definedSupplier", { data: supplier });
   } catch (err) {
     sequelize.close();
-    console.log("Error", err);
+    const error = new Error((err as Error).message);
+    return next(error);
   }
 };
 
@@ -335,11 +341,11 @@ export const searchPage = async (
       });
       const end1 = performance.now();
       writeLog(sqlReq1, end1 - start1);
-      console.log("products", products);
       res.status(200).render("./pages/search", { data: products, table });
     } catch (err) {
       sequelize.close();
-      console.log("Error", err);
+      const error = new Error((err as Error).message);
+      return next(error);
     }
   }
   if (table === "customers") {
@@ -367,11 +373,11 @@ export const searchPage = async (
       });
       const end = performance.now();
       writeLog(sqlReq, end - start);
-      console.log("customers", customers);
       res.status(200).render("./pages/search", { data: customers, table });
     } catch (err) {
       sequelize.close();
-      console.log("Error", err);
+      const error = new Error((err as Error).message);
+      return next(error);
     }
   }
   res.status(200).render("./pages/search");
@@ -400,6 +406,7 @@ export const dashboardPage = (
       });
     })
     .catch((err) => {
-      throw Error((err as Error).message);
+      const error = new Error((err as Error).message);
+      return next(error);
     });
 };

@@ -1,6 +1,5 @@
 require("dotenv").config();
 import express from "express";
-import { Request, Response, NextFunction } from "express";
 import type { ErrorRequestHandler } from "express";
 import { get404 } from "./controllers/errors";
 import helmet from "helmet";
