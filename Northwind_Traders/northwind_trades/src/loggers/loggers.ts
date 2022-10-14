@@ -12,10 +12,3 @@ export const writeLog = (req: string, time: number): void => {
     },
   );
 };
-
-export const readSqlLogs = async (): Promise<string> => {
-  return fs.readFileSync(
-    path.join(__dirname, "../../logs/sqlRequests.log"),
-    "utf8",
-  );
-};

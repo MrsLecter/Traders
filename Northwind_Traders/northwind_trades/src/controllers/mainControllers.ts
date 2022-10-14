@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import { Products, Customers } from "../models/mainModels";
-import { writeLog, readSqlLogs } from "../loggers/loggers";
+import { writeLog } from "../loggers/loggers";
+import { readSqlLogs } from "../utils/utils";
 import { sequelize } from "../database/dbInit";
 import { Op } from "sequelize";
 import { CustomersType } from "../types/types";
@@ -35,7 +36,9 @@ export const searchPage = async (
       });
       const end1 = performance.now();
       writeLog(sqlReq1, end1 - start1);
-      res.status(200).render("./pages/search", { data: product, table });
+      if (product) {
+        res.status(200).render("./pages/search", { data: product, table });
+      }
     } catch (err) {
       sequelize.close();
       const error = new Error((err as Error).message);
@@ -68,10 +71,12 @@ export const searchPage = async (
       });
       const end = performance.now();
       writeLog(sqlReq, end - start);
-      res.status(200).render("./pages/search", {
-        data: customers,
-        table,
-      });
+      if (customers) {
+        res.status(200).render("./pages/search", {
+          data: customers,
+          table,
+        });
+      }
     } catch (err) {
       sequelize.close();
       const error = new Error((err as Error).message);

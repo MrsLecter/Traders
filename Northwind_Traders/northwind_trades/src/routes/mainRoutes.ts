@@ -1,16 +1,6 @@
 import { Router } from "express";
 import {
   startPage,
-  // employeesPage,
-  // employeePage,
-  // customersPage,
-  // customerPage,
-  // productsPage,
-  // productPage,
-  // ordersPage,
-  // orderPage,
-  // suppliersPage,
-  // supplierPage,
   searchPage,
   dashboardPage,
 } from "../controllers/mainControllers";
