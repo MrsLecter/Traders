@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { writeLog } from "../loggers/loggers";
+import { writeLog } from "../loggers/logger";
 import { modelDefiners } from "../sequelize/index";
 
 export const suppliersPage = async (

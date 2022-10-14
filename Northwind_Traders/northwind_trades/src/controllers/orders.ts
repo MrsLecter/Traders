@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { writeLog } from "../loggers/loggers";
+import { writeLog } from "../loggers/logger";
 import {
   QUERY_ORDERS_PAGE,
   QUERY_DEFINED_ORDER,

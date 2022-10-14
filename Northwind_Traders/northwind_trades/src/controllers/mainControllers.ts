@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { sequelize } from "../sequelize";
-import { writeLog } from "../loggers/loggers";
+import { writeLog } from "../loggers/logger";
 import { readSqlLogs } from "../utils/utils";
 import { Op } from "sequelize";
 import { CustomersType } from "../types/types";
