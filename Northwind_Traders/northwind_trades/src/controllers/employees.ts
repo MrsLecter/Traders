@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { Employees } from "../models/mainModels";
 import { writeLog } from "../loggers/loggers";
-import { sequelize } from "../database/dbInit";
+import { sequelize } from "../sequelize";
+import { modelDefiners } from "../sequelize/index";
 
 export const employeesPage = async (
   req: Request,
@@ -9,11 +9,11 @@ export const employeesPage = async (
   next: NextFunction,
 ) => {
   try {
-    await Employees.sync({ alter: true });
+    await modelDefiners.employees.sync({ alter: true });
     let sqlReq = "";
     const start = performance.now();
-    const employees = await Employees.findAll({
-      logging: (sql) => {
+    const employees = await modelDefiners.employees.findAll({
+      logging: (sql: string) => {
         sqlReq += sql;
       },
     });
@@ -36,15 +36,15 @@ export const employeePage = async (
   let sqlReq = "";
   const start = performance.now();
   try {
-    await Employees.sync({ alter: true });
-    const employee = await Employees.findOne({
-      logging: (sql) => {
+    await modelDefiners.employees.sync({ alter: true });
+    const employee = await modelDefiners.employees.findOne({
+      logging: (sql: string) => {
         sqlReq += sql;
       },
       where: { employeeid: employeeid },
     });
 
-    const reportsTo = await Employees.findOne({
+    const reportsTo = await modelDefiners.employees.findOne({
       where: { employeeid: employee?.reportsto },
     });
     const end = performance.now();

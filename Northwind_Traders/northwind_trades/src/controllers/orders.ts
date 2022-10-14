@@ -1,13 +1,11 @@
 import { Request, Response, NextFunction } from "express";
-import { Orders, Products } from "../models/mainModels";
 import { writeLog } from "../loggers/loggers";
-import { sequelize } from "../database/dbInit";
-
 import {
   QUERY_ORDERS_PAGE,
   QUERY_DEFINED_ORDER,
   QUERY_DEFINED_PRODUCT,
 } from "../constants";
+import { sequelize, modelDefiners } from "../sequelize/index";
 
 export const ordersPage = async (
   req: Request,
@@ -15,7 +13,7 @@ export const ordersPage = async (
   next: NextFunction,
 ) => {
   try {
-    await Orders.sync({ alter: true });
+    await modelDefiners.orders.sync({ alter: true });
     let sqlReq = "";
     const start = performance.now();
     const [orders] = await sequelize.query(QUERY_ORDERS_PAGE, {
@@ -41,8 +39,8 @@ export const orderPage = async (
 ) => {
   const orderid = req.params["orderid"];
   try {
-    await Orders.sync({ alter: true });
-    await Products.sync({ alter: true });
+    await modelDefiners.orders.sync({ alter: true });
+    await modelDefiners.products.sync({ alter: true });
     let sqlReq = "";
     const start = performance.now();
     const [orders] = await sequelize.query(QUERY_DEFINED_ORDER(orderid), {

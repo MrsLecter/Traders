@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import { Supplies } from "../models/mainModels";
 import { writeLog } from "../loggers/loggers";
-import { sequelize } from "../database/dbInit";
+import { modelDefiners } from "../sequelize/index";
 
 export const suppliersPage = async (
   req: Request,
@@ -9,11 +8,11 @@ export const suppliersPage = async (
   next: NextFunction,
 ) => {
   try {
-    await Supplies.sync({ alter: true });
+    await modelDefiners.suppliers.sync({ alter: true });
     let sqlReq = "";
     const start = performance.now();
-    const suppliers = await Supplies.findAll({
-      logging: (sql) => {
+    const suppliers = await modelDefiners.suppliers.findAll({
+      logging: (sql: string) => {
         sqlReq += sql;
       },
     });
@@ -21,7 +20,6 @@ export const suppliersPage = async (
     writeLog(sqlReq, end - start);
     res.status(200).render("./pages/suppliers", { data: suppliers });
   } catch (err) {
-    sequelize.close();
     const error = new Error((err as Error).message);
     return next(error);
   }
@@ -34,11 +32,11 @@ export const supplierPage = async (
 ) => {
   const supplierid = req.params["supplierid"];
   try {
-    await Supplies.sync({ alter: true });
+    await modelDefiners.suppliers.sync({ alter: true });
     let sqlReq = "";
     const start = performance.now();
-    const supplier = await Supplies.findOne({
-      logging: (sql) => {
+    const supplier = await modelDefiners.suppliers.findOne({
+      logging: (sql: string) => {
         sqlReq += sql;
       },
       where: { supplierid: supplierid },
@@ -47,7 +45,6 @@ export const supplierPage = async (
     writeLog(sqlReq, end - start);
     res.status(200).render("./pages/definedSupplier", { data: supplier });
   } catch (err) {
-    sequelize.close();
     const error = new Error((err as Error).message);
     return next(error);
   }

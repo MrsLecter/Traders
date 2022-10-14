@@ -8,6 +8,7 @@ import morgan from "morgan";
 import fs from "fs";
 import path from "path";
 import mainRouts from "./routes/mainRoutes";
+import { sequelize } from "./sequelize/index";
 
 const PORT = parseInt(process.env.PORT) || 3000;
 const app = express();
@@ -33,10 +34,26 @@ const errHandler: ErrorRequestHandler = (err, req, res, next) => {
 
 app.use(errHandler);
 
-try {
-  app.listen(PORT);
-  console.log(`Server is running on port ${PORT}`);
-} catch (e) {
-  console.error(e);
-  throw new Error(`An error occured in app.listen(${PORT})`);
+async function assertDatabaseConnectionOk() {
+  console.log(`Checking database connection...`);
+  try {
+    await sequelize.authenticate();
+    console.log("Database connection OK!");
+  } catch (error) {
+    console.log("Unable to connect to the database:");
+    console.log((error as Error).message);
+    process.exit(1);
+  }
 }
+
+async function init() {
+  await assertDatabaseConnectionOk();
+
+  console.log(`Starting Sequelize + Express example on port ${PORT}...`);
+
+  app.listen(PORT, () => {
+    console.log(`Express server started on port ${PORT}`);
+  });
+}
+
+init();

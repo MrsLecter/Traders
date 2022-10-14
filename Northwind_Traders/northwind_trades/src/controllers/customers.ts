@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { Customers } from "../models/mainModels";
 import { writeLog } from "../loggers/loggers";
-import { sequelize } from "../database/dbInit";
+import { sequelize } from "../sequelize";
+import { modelDefiners } from "../sequelize/index";
 
 export const customersPage = async (
   req: Request,
@@ -9,11 +9,11 @@ export const customersPage = async (
   next: NextFunction,
 ) => {
   try {
-    await Customers.sync({ alter: true });
+    await modelDefiners.customers.sync({ alter: true });
     let sqlReq = "";
     const start = performance.now();
-    const customers = await Customers.findAll({
-      logging: (sql) => {
+    const customers = await modelDefiners.customers.findAll({
+      logging: (sql: string) => {
         sqlReq += sql;
       },
     });
@@ -34,11 +34,11 @@ export const customerPage = async (
 ) => {
   const customerid = req.params["customerid"];
   try {
-    await Customers.sync({ alter: true });
+    await modelDefiners.customers.sync({ alter: true });
     let sqlReq = "";
     const start = performance.now();
-    const customer = await Customers.findOne({
-      logging: (sql) => {
+    const customer = await modelDefiners.customers.findOne({
+      logging: (sql: string) => {
         sqlReq += sql;
       },
       where: { customerid: customerid },

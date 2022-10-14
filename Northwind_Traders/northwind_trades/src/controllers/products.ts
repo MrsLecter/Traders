@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { Products, Supplies } from "../models/mainModels";
 import { writeLog } from "../loggers/loggers";
-import { sequelize } from "../database/dbInit";
+import { sequelize } from "../sequelize";
+import { modelDefiners } from "../sequelize/index";
 
 export const productsPage = async (
   req: Request,
@@ -9,11 +9,11 @@ export const productsPage = async (
   next: NextFunction,
 ) => {
   try {
-    await Products.sync({ alter: true });
+    await modelDefiners.products.sync({ alter: true });
     let sqlReq = "";
     const start = performance.now();
-    const products = await Products.findAll({
-      logging: (sql) => {
+    const products = await modelDefiners.products.findAll({
+      logging: (sql: string) => {
         sqlReq += sql;
       },
     });
@@ -34,11 +34,11 @@ export const productPage = async (
 ) => {
   const productid = req.params["productid"];
   try {
-    await Products.sync({ alter: true });
+    await modelDefiners.products.sync({ alter: true });
     let sqlReq1 = "";
     const start1 = performance.now();
-    const product = await Products.findOne({
-      logging: (sql) => {
+    const product = await modelDefiners.products.findOne({
+      logging: (sql: string) => {
         sqlReq1 += sql;
       },
       where: { productid: productid },
@@ -48,8 +48,8 @@ export const productPage = async (
 
     let sqlReq2 = "";
     const start2 = performance.now();
-    const supplier = await Supplies.findOne({
-      logging: (sql) => {
+    const supplier = await modelDefiners.suppliers.findOne({
+      logging: (sql: string) => {
         sqlReq2 += sql;
       },
       where: { supplierid: product?.supplierid },

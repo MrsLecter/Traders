@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import { Products, Customers } from "../models/mainModels";
+import { sequelize } from "../sequelize";
 import { writeLog } from "../loggers/loggers";
 import { readSqlLogs } from "../utils/utils";
-import { sequelize } from "../database/dbInit";
 import { Op } from "sequelize";
 import { CustomersType } from "../types/types";
+import { modelDefiners } from "../sequelize/index";
 
 export const startPage = async (
   req: Request,
@@ -25,11 +25,11 @@ export const searchPage = async (
   if (table === "products") {
     try {
       if (!searchParam) throw new Error("Empty search string");
-      await Products.sync({ alter: true });
+      await modelDefiners.products.sync({ alter: true });
       let sqlReq1 = "";
       const start1 = performance.now();
-      const product = await Products.findOne({
-        logging: (sql) => {
+      const product = await modelDefiners.products.findOne({
+        logging: (sql: string) => {
           sqlReq1 += sql;
         },
         where: { productname: searchParam },
@@ -48,11 +48,11 @@ export const searchPage = async (
   if (table === "customers") {
     try {
       if (!searchParam) throw new Error("Empty search string");
-      await Customers.sync({ alter: true });
+      await modelDefiners.customers.sync({ alter: true });
       let sqlReq = "";
       const start = performance.now();
-      const customers: CustomersType[] = await Customers.findAll({
-        logging: (sql) => {
+      const customers: CustomersType[] = await modelDefiners.customers.findAll({
+        logging: (sql: string) => {
           sqlReq += sql;
         },
         where: {
