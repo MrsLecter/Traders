@@ -1,4 +1,4 @@
-export type suppliersType = {
+export type SuppliersType = {
   supplierid: number;
   companyname: string;
   contactname: string;
@@ -13,7 +13,7 @@ export type suppliersType = {
   homepage: null;
 };
 
-export type productsType = {
+export type ProductsType = {
   productid: number;
   productname: string;
   supplierid: number;
@@ -26,7 +26,7 @@ export type productsType = {
   discontinued: number;
 };
 
-export type ordersType = {
+export type OrdersType = {
   orderid: number;
   products: string;
   totalprice: number;
@@ -37,7 +37,7 @@ export type ordersType = {
   shipcountry: string;
 };
 
-export type definedOrderType = {
+export type DefinedOrderType = {
   customerid: string;
   shipname: string;
   totalproducts: string;
@@ -54,7 +54,7 @@ export type definedOrderType = {
   shipcountry: string;
 };
 
-export type employeesType = {
+export type EmployeesType = {
   employeeid: number;
   lastname: string;
   firstname: string;
@@ -73,7 +73,7 @@ export type employeesType = {
   reportsto: number;
 };
 
-export type customersType = {
+export type CustomersType = {
   customerid: string;
   companyname: string;
   contactname: string;

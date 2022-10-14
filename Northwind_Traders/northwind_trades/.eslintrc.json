@@ -11,5 +11,44 @@
         "sourceType": "module"
     },
     "rules": {
+        "no-var": "error",
+        "no-new-object": "error",
+        "object-shorthand": "error",
+        "quote-props": ["error", "consistent"],
+        "prefer-object-spread": "error",
+        "no-array-constructor": "error",
+        "prefer-destructuring": ["error", {
+            "array": true,
+            "object": true
+        }, {
+            "enforceForRenamedProperties": false
+        }],
+        "quotes": ["error", "double"],
+        "prefer-template": "error",
+        "func-style": ["error", "declaration", { "allowArrowFunctions": true }],
+        "prefer-rest-params": "error",
+        "default-param-last": ["error"],
+        "space-before-blocks": "error",
+        "space-before-function-paren": ["error", {
+            "anonymous": "always",
+            "named": "always",
+            "asyncArrow": "always"
+        }],
+        "prefer-spread": "error",
+        "prefer-arrow-callback": "error",
+        "arrow-spacing": ["error", { "before": false, "after": false }],
+        "arrow-parens": ["error", "always"],
+        "no-confusing-arrow": "error",
+        "no-duplicate-imports": "error",
+        "dot-notation": ["error", { "allowKeywords": false }],
+        "no-restricted-properties": [2, {
+            "object": "disallowedObjectName",
+            "property": "disallowedPropertyName"
+        }, {
+            "object": "disallowedObjectName",
+            "property": "anotherDisallowedPropertyName",
+            "message": "Please use allowedObjectName.allowedPropertyName."
+        }],
+        "indent": ["error", 2]
     }
 }

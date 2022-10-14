@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./dist/app"
+    "start": "node ./dist/app",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "MissisLecter",

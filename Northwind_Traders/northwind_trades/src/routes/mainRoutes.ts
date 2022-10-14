@@ -1,19 +1,24 @@
 import { Router } from "express";
 import {
   startPage,
-  employeesPage,
-  employeePage,
-  customersPage,
-  customerPage,
-  productsPage,
-  productPage,
-  ordersPage,
-  orderPage,
-  suppliersPage,
-  supplierPage,
+  // employeesPage,
+  // employeePage,
+  // customersPage,
+  // customerPage,
+  // productsPage,
+  // productPage,
+  // ordersPage,
+  // orderPage,
+  // suppliersPage,
+  // supplierPage,
   searchPage,
   dashboardPage,
 } from "../controllers/mainControllers";
+import { employeesPage, employeePage } from "../controllers/employees";
+import { customersPage, customerPage } from "../controllers/customers";
+import { productsPage, productPage } from "../controllers/products";
+import { ordersPage, orderPage } from "../controllers/orders";
+import { suppliersPage, supplierPage } from "../controllers/suppliers";
 
 const router = Router();
 

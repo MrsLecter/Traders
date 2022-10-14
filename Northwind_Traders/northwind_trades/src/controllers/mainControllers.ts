@@ -1,14 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import {
-  Orders,
-  Products,
-  Employees,
-  Customers,
-  Supplies,
-} from "../models/mainModels";
-import { writeLog, readSqlLogs } from "../utils/utils";
-import { sequelize } from "../utils/dbConnect";
+import { Products, Customers } from "../models/mainModels";
+import { writeLog, readSqlLogs } from "../loggers/loggers";
+import { sequelize } from "../database/dbInit";
 import { Op } from "sequelize";
+import { CustomersType } from "../types/types";
 
 export const startPage = async (
   req: Request,
@@ -18,322 +13,21 @@ export const startPage = async (
   res.status(200).render("./pages/homePage");
 };
 
-export const employeesPage = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    await Employees.sync({ alter: true });
-    let sqlReq = "";
-    const start = performance.now();
-    const employees = await Employees.findAll({
-      logging: (sql) => {
-        sqlReq += sql;
-      },
-    });
-    const end = performance.now();
-    writeLog(sqlReq, end - start);
-    res.status(200).render("./pages/employees", { data: employees });
-  } catch (err) {
-    sequelize.close();
-    const error = new Error((err as Error).message);
-    return next(error);
-  }
-};
-
-export const employeePage = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  const employeeid = req.params["employeeid"];
-  let sqlReq = "";
-  const start = performance.now();
-  try {
-    await Employees.sync({ alter: true });
-    const employee = await Employees.findOne({
-      logging: (sql) => {
-        sqlReq += sql;
-      },
-      where: { employeeid: employeeid },
-    });
-
-    const reportsTo = await Employees.findOne({
-      where: { employeeid: employee?.reportsto },
-    });
-    const end = performance.now();
-    writeLog(sqlReq, end - start);
-    res
-      .status(200)
-      .render("./pages/definedEmployee", { data: employee, link: reportsTo });
-  } catch (err) {
-    sequelize.close();
-    const error = new Error((err as Error).message);
-    return next(error);
-  }
-};
-
-export const customersPage = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    await Customers.sync({ alter: true });
-    let sqlReq = "";
-    const start = performance.now();
-    const customers = await Customers.findAll({
-      logging: (sql) => {
-        sqlReq += sql;
-      },
-    });
-    const end = performance.now();
-    writeLog(sqlReq, end - start);
-    res.status(200).render("./pages/customers", { data: customers });
-  } catch (err) {
-    sequelize.close();
-    const error = new Error((err as Error).message);
-    return next(error);
-  }
-};
-
-export const customerPage = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  const customerid = req.params["customerid"];
-  try {
-    await Customers.sync({ alter: true });
-    let sqlReq = "";
-    const start = performance.now();
-    const customer = await Customers.findOne({
-      logging: (sql) => {
-        sqlReq += sql;
-      },
-      where: { customerid: customerid },
-    });
-    const end = performance.now();
-    writeLog(sqlReq, end - start);
-    res.status(200).render("./pages/definedCustomer", { data: customer });
-  } catch (err) {
-    sequelize.close();
-    const error = new Error((err as Error).message);
-    return next(error);
-  }
-};
-
-export const productsPage = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    await Products.sync({ alter: true });
-    let sqlReq = "";
-    const start = performance.now();
-    const products = await Products.findAll({
-      logging: (sql) => {
-        sqlReq += sql;
-      },
-    });
-    const end = performance.now();
-    writeLog(sqlReq, end - start);
-    res.status(200).render("./pages/products", { data: products });
-  } catch (err) {
-    sequelize.close();
-    const error = new Error((err as Error).message);
-    return next(error);
-  }
-};
-
-export const productPage = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  const productid = req.params["productid"];
-  try {
-    await Products.sync({ alter: true });
-    let sqlReq1 = "";
-    const start1 = performance.now();
-    const product = await Products.findOne({
-      logging: (sql) => {
-        sqlReq1 += sql;
-      },
-      where: { productid: productid },
-    });
-    const end1 = performance.now();
-    writeLog(sqlReq1, end1 - start1);
-
-    let sqlReq2 = "";
-    const start2 = performance.now();
-    const supplier = await Supplies.findOne({
-      logging: (sql) => {
-        sqlReq2 += sql;
-      },
-      where: { supplierid: product?.supplierid },
-    });
-    const end2 = performance.now();
-    writeLog(sqlReq2, end2 - start2);
-    res.status(200).render("./pages/definedProduct", {
-      data: product,
-      supplier: supplier,
-    });
-  } catch (err) {
-    sequelize.close();
-    const error = new Error((err as Error).message);
-    return next(error);
-  }
-};
-
-export const ordersPage = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    await Orders.sync({ alter: true });
-    let sqlReq = "";
-    const start = performance.now();
-    const [orders, meta] = await sequelize.query(
-      "select orders.orderid ,count(orders.orderid) as products, SUM(orderdetails.quantity * orderdetails.unitprice) as totalprice, SUM(orderdetails.quantity) as quantity, orders.shippeddate, orders.shipname, orders.shipcity, orders.shipcountry  from orders left join orderdetails  on orders.orderid = orderdetails.orderid left join shippers on orders.shipvia=shippers.shipperid group by (orders.orderid) ORDER BY orders.orderid ASC;",
-      {
-        logging: (sql) => {
-          sqlReq += sql;
-        },
-        raw: true,
-      },
-    );
-    const end = performance.now();
-    writeLog(sqlReq, end - start);
-    res.status(200).render("./pages/orders", { data: orders });
-  } catch (err) {
-    sequelize.close();
-    const error = new Error((err as Error).message);
-    return next(error);
-  }
-};
-
-export const orderPage = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  const orderid = req.params["orderid"];
-  try {
-    await Orders.sync({ alter: true });
-    await Products.sync({ alter: true });
-    let sqlReq = "";
-    const start = performance.now();
-    const [orders, meta] = await sequelize.query(
-      `select orders.customerid ,orders.shipname, count(orders.orderid) as totalproducts, SUM(orderdetails.quantity) as totalquantity, SUM(orderdetails.quantity * orderdetails.unitprice) as totalprice, SUM(orderdetails.quantity * orderdetails.discount) as totaldiscount, orders.shipvia, orders.freight, orders.orderdate, orders.shippeddate, orders.shipcity, orders.shipregion, orders.shippostalcode, orders.shipcountry from orders left join orderdetails on orders.orderid = orderdetails.orderid left join shippers on orders.shipvia=shippers.shipperid where orders.orderid = ${orderid} group by (orders.orderid) ORDER BY orders.orderid ASC;`,
-      {
-        logging: (sql) => {
-          sqlReq += sql;
-        },
-        raw: true,
-      },
-    );
-    const end = performance.now();
-    writeLog(sqlReq, end - start);
-
-    let sqlReq2 = "";
-    const start2 = performance.now();
-    const [products, metaProducts] = await sequelize.query(
-      `select orderdetails.productid, products.productname, orderdetails.quantity, orderdetails.unitprice as orderprice, (orderdetails.unitprice * orderdetails.quantity) as totalprice, (orderdetails.discount * orderdetails.quantity) as discount from orderdetails left join products on orderdetails.productid = products.productid where orderdetails.orderid = ${orderid};`,
-      {
-        logging: (sql) => {
-          sqlReq2 += sql;
-        },
-        raw: true,
-      },
-    );
-    const end2 = performance.now();
-    writeLog(sqlReq2, end2 - start2);
-    res.status(200).render("./pages/definedOrder", {
-      data: orders[0],
-      dataProducts: products,
-    });
-  } catch (err) {
-    sequelize.close();
-    const error = new Error((err as Error).message);
-    return next(error);
-  }
-};
-
-export const suppliersPage = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  try {
-    await Supplies.sync({ alter: true });
-    let sqlReq = "";
-    const start = performance.now();
-    const suppliers = await Supplies.findAll({
-      logging: (sql) => {
-        sqlReq += sql;
-      },
-    });
-    const end = performance.now();
-    writeLog(sqlReq, end - start);
-    res.status(200).render("./pages/suppliers", { data: suppliers });
-  } catch (err) {
-    sequelize.close();
-    const error = new Error((err as Error).message);
-    return next(error);
-  }
-};
-
-export const supplierPage = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  const supplierid = req.params["supplierid"];
-  try {
-    await Supplies.sync({ alter: true });
-    let sqlReq = "";
-    const start = performance.now();
-    const supplier = await Supplies.findOne({
-      logging: (sql) => {
-        sqlReq += sql;
-      },
-      where: { supplierid: supplierid },
-    });
-    const end = performance.now();
-    writeLog(sqlReq, end - start);
-    res.status(200).render("./pages/definedSupplier", { data: supplier });
-  } catch (err) {
-    sequelize.close();
-    const error = new Error((err as Error).message);
-    return next(error);
-  }
-};
-
 export const searchPage = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  const table = req.query.table;
-  const searchParam = req.query.parametr;
-  console.log(
-    "req param",
-    req.query,
-    "table",
-    table,
-    "searchparam",
-    searchParam,
-  );
+  const table = req.query.table as string;
+  const searchParam = req.query.parametr as string;
+
   if (table === "products") {
     try {
+      if (!searchParam) throw new Error("Empty search string");
       await Products.sync({ alter: true });
       let sqlReq1 = "";
       const start1 = performance.now();
-      const products = await Products.findOne({
+      const product = await Products.findOne({
         logging: (sql) => {
           sqlReq1 += sql;
         },
@@ -341,7 +35,7 @@ export const searchPage = async (
       });
       const end1 = performance.now();
       writeLog(sqlReq1, end1 - start1);
-      res.status(200).render("./pages/search", { data: products, table });
+      res.status(200).render("./pages/search", { data: product, table });
     } catch (err) {
       sequelize.close();
       const error = new Error((err as Error).message);
@@ -350,10 +44,11 @@ export const searchPage = async (
   }
   if (table === "customers") {
     try {
+      if (!searchParam) throw new Error("Empty search string");
       await Customers.sync({ alter: true });
       let sqlReq = "";
       const start = performance.now();
-      const customers = await Customers.findOne({
+      const customers: CustomersType[] = await Customers.findAll({
         logging: (sql) => {
           sqlReq += sql;
         },
@@ -373,7 +68,10 @@ export const searchPage = async (
       });
       const end = performance.now();
       writeLog(sqlReq, end - start);
-      res.status(200).render("./pages/search", { data: customers, table });
+      res.status(200).render("./pages/search", {
+        data: customers,
+        table,
+      });
     } catch (err) {
       sequelize.close();
       const error = new Error((err as Error).message);
@@ -390,12 +88,13 @@ export const dashboardPage = (
 ) => {
   readSqlLogs()
     .then((logs) => {
-      const selectCount = logs.split("SELECT").length - 1;
+      let selectCount = logs.split("SELECT").length - 1;
       const whereCount = logs.split("WHERE").length - 1;
-      const joinCount = logs.split("JOIN").length - 1;
-      let logsArr = logs.split(";\n");
+      const joinCount = logs.split("LEFT JOIN").length - 1;
+      const logsArr = logs.split(";\n");
       logsArr.pop();
       const queryCount = logsArr.length;
+      selectCount = selectCount - joinCount;
 
       res.status(200).render("./pages/dashboard", {
         data: logsArr,

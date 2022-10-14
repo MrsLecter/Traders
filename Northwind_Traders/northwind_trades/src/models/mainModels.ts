@@ -5,9 +5,9 @@ import {
   CreationOptional,
   InferAttributes,
   InferCreationAttributes,
-  IntegerDataType,
 } from "sequelize";
 require("dotenv").config();
+
 const sequelize = new Sequelize(process.env.DB_URL);
 
 interface Regions
