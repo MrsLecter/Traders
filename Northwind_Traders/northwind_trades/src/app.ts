@@ -41,7 +41,7 @@ async function assertDatabaseConnectionOk() {
     console.log("Database connection OK!");
   } catch (error) {
     console.log("Unable to connect to the database:");
-    console.log((error as Error).message);
+    console.error((error as Error).message);
     process.exit(1);
   }
 }
