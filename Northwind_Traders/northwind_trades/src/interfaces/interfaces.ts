@@ -3,6 +3,7 @@ import {
   CreationOptional,
   InferAttributes,
   InferCreationAttributes,
+  ModelStatic,
 } from "sequelize";
 
 export interface RegionsInterface
@@ -161,4 +162,18 @@ export interface OrderDetailsInterface
   unitprice: number;
   quantity: number;
   discount: number;
+}
+
+export interface modelDefinersInterface {
+  categories: ModelStatic<CategoriesInterface>;
+  customers: ModelStatic<CustomersInterface>;
+  employees: ModelStatic<EmployeesInterface>;
+  employeesterritories: ModelStatic<EmployeesTerritoriesInterface>;
+  orderdetails: ModelStatic<OrderDetailsInterface>;
+  orders: ModelStatic<OrdersInterface>;
+  products: ModelStatic<ProductsInterface>;
+  regions: ModelStatic<RegionsInterface>;
+  shippers: ModelStatic<ShippersInterface>;
+  suppliers: ModelStatic<SuppliesInterface>;
+  territiries: ModelStatic<TerritoriesInterface>;
 }

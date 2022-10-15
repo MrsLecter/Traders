@@ -4,7 +4,7 @@ import {
   QUERY_ORDERS_PAGE,
   QUERY_DEFINED_ORDER,
   QUERY_DEFINED_PRODUCT,
-} from "../constants";
+} from "../databaseRequestStrings";
 import { sequelize, modelDefiners } from "../sequelize/index";
 
 export const ordersPage = async (

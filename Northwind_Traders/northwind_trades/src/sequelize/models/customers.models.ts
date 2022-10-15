@@ -1,8 +1,8 @@
-import { DataTypes, Sequelize } from "sequelize";
+import { DataTypes, Sequelize, ModelStatic } from "sequelize";
 require("dotenv").config();
 import { CustomersInterface } from "../../interfaces/interfaces";
 
-module.exports = (sequelize: Sequelize) =>
+module.exports = (sequelize: Sequelize): ModelStatic<CustomersInterface> =>
   sequelize.define<CustomersInterface>(
     "customers",
     {

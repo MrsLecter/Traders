@@ -19,7 +19,7 @@ export const suppliersPage = async (
     const end = performance.now();
     writeLog(sqlReq, end - start);
     res.status(200).render("./pages/suppliers", { data: suppliers });
-  } catch (err) {
+  } catch (err: any) {
     const error = new Error((err as Error).message);
     return next(error);
   }
@@ -44,7 +44,7 @@ export const supplierPage = async (
     const end = performance.now();
     writeLog(sqlReq, end - start);
     res.status(200).render("./pages/definedSupplier", { data: supplier });
-  } catch (err) {
+  } catch (err: any) {
     const error = new Error((err as Error).message);
     return next(error);
   }

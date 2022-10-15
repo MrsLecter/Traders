@@ -1,11 +1,12 @@
-import { Sequelize } from "sequelize";
+import { Sequelize, ModelStatic } from "sequelize";
 import { applyExtraSetup } from "./relations";
+import { modelDefinersInterface } from "../interfaces/interfaces";
 require("dotenv").config();
 const sequelize = new Sequelize(process.env.DB_URL, {
   logging: (...msg) => console.log(msg),
 });
 
-const modelDefiners = {
+const modelDefiners: modelDefinersInterface = {
   categories: require("./models/categories.models")(sequelize),
   customers: require("./models/customers.models")(sequelize),
   employees: require("./models/employees.models")(sequelize),

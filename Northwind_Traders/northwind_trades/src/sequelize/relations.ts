@@ -29,5 +29,3 @@ export function applyExtraSetup(sequelize: Sequelize) {
     foreignKey: "supplierid",
   });
 }
-
-module.exports = { applyExtraSetup };

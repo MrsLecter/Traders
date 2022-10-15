@@ -5,7 +5,7 @@ import { get404 } from "./error/errors";
 import helmet from "helmet";
 import { json } from "body-parser";
 import morgan from "morgan";
-import fs from "fs";
+import { createWriteStream } from "fs";
 import path from "path";
 import mainRouts from "./routes/mainRoutes";
 import { sequelize } from "./sequelize/index";
@@ -17,7 +17,7 @@ app.set("view engine", "ejs");
 app.use(json());
 app.use(helmet());
 
-const logStream = fs.createWriteStream(
+const logStream = createWriteStream(
   path.join(__dirname, "../logs/logStream.log"),
   {
     flags: "a",
@@ -34,23 +34,21 @@ const errHandler: ErrorRequestHandler = (err, req, res, next) => {
 
 app.use(errHandler);
 
-async function assertDatabaseConnectionOk() {
-  console.log(`Checking database connection...`);
+const assertDatabaseConnectionOk = async (): Promise<void> => {
+  console.info(`Checking database connection...`);
   try {
     await sequelize.authenticate();
-    console.log("Database connection OK!");
+    console.info("Database connection OK!");
   } catch (error) {
-    console.log("Unable to connect to the database:");
-    console.error((error as Error).message);
+    console.error("Unable to connect to the database:");
+    console.log((error as Error).message);
     process.exit(1);
   }
-}
+};
 
-async function init() {
+(async (): Promise<void> => {
   await assertDatabaseConnectionOk();
   app.listen(PORT, () => {
-    console.log(`Express server started on port ${PORT}`);
+    console.info(`Express server started on port ${PORT}`);
   });
-}
-
-init();
+})();
